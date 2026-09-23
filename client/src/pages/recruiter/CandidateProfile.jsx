@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Shield, MapPin, Mail, Github, CheckCircle2, Award, ChevronLeft, Bookmark } from 'lucide-react';
+import { Shield, MapPin, Mail, GitBranch, CheckCircle2, Award, ChevronLeft, Bookmark } from 'lucide-react';
 import { mockStudents } from '../../data/mockRecruiterData';
 
 export default function CandidateProfile() {
@@ -50,7 +50,7 @@ export default function CandidateProfile() {
               <span className="flex items-center gap-xs"><MapPin size={16} /> {candidate.location}</span>
               <span className="flex items-center gap-xs"><Mail size={16} /> {candidate.email}</span>
               <a href={`https://github.com/${candidate.github}`} target="_blank" rel="noreferrer" className="flex items-center gap-xs" style={{ color: 'var(--text-primary)', textDecoration: 'none' }}>
-                <Github size={16} /> github.com/{candidate.github}
+                <GitBranch size={16} /> github.com/{candidate.github}
               </a>
             </div>
           </div>
@@ -95,7 +95,7 @@ export default function CandidateProfile() {
               {candidate.evidence.map((item, idx) => (
                 <div key={item.id} className="flex items-start gap-md relative" style={{ zIndex: 1 }}>
                   <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: 'white', border: '2px solid var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, zIndex: 2 }}>
-                    {item.type === 'Project' ? <Github size={20} color="var(--primary)" /> : 
+                    {item.type === 'Project' ? <GitBranch size={20} color="var(--primary)" /> : 
                      item.type === 'Certificate' ? <Award size={20} color="var(--primary)" /> : 
                      <Shield size={20} color="var(--primary)" />}
                   </div>

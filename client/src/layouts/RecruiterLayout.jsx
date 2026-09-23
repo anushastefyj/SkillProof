@@ -8,7 +8,8 @@ import {
   LogOut,
   Shield,
   Search,
-  Briefcase
+  Briefcase,
+  Bell
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
