@@ -23,6 +23,8 @@ import RecruiterDashboard from './pages/recruiter/RecruiterDashboard';
 import BrowseStudents from './pages/recruiter/BrowseStudents';
 import CandidateProfile from './pages/recruiter/CandidateProfile';
 import SavedCandidates from './pages/recruiter/SavedCandidates';
+import RecruiterJobs from './pages/recruiter/RecruiterJobs';
+import RecruiterSettings from './pages/recruiter/RecruiterSettings';
 
 import { Toaster } from 'react-hot-toast';
 
@@ -57,7 +59,8 @@ function App() {
             <Route path="browse" element={<BrowseStudents />} />
             <Route path="candidate/:id" element={<CandidateProfile />} />
             <Route path="saved" element={<SavedCandidates />} />
-            <Route path="settings" element={<div>Recruiter Settings</div>} />
+            <Route path="jobs" element={<RecruiterJobs />} />
+            <Route path="settings" element={<RecruiterSettings />} />
           </Route>
 
           {/* Fallback */}
