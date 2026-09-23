@@ -1,231 +1,121 @@
-import React, { useState } from 'react';
-import { ChevronLeft, CheckCircle2, Bookmark, Mail, MapPin, Award, ShieldCheck, FolderCheck, GitBranch, Code2 } from 'lucide-react';
-import { Link, useParams } from 'react-router-dom';
+import React from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Shield, MapPin, Mail, Github, CheckCircle2, Award, ChevronLeft, Bookmark } from 'lucide-react';
+import { mockStudents } from '../../data/mockRecruiterData';
 
 export default function CandidateProfile() {
   const { id } = useParams();
-  const [activeTab, setActiveTab] = useState('Overview');
+  const navigate = useNavigate();
+  
+  const candidate = mockStudents.find(s => s.id === parseInt(id));
 
-  // Hardcoded candidate data for UI matching
-  const candidate = {
-    name: 'Anusha Stefy J',
-    school: 'B.Tech AI & DS • MTIET',
-    location: 'Bangalore, India',
-    email: 'anusha@example.com',
-    avatar: 'https://ui-avatars.com/api/?name=Anusha&background=e0e7ff&color=3b82f6',
-    verified: true
-  };
+  if (!candidate) {
+    return (
+      <div style={{ padding: '3rem', textAlign: 'center' }}>
+        <h2 className="h3 mb-md">Candidate Not Found</h2>
+        <button onClick={() => navigate(-1)} className="btn btn-secondary">Go Back</button>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex-col gap-xl animate-fade-in">
+    <div className="flex-col gap-lg animate-fade-in" style={{ paddingBottom: '2rem' }}>
       
-      {/* Top Header Row */}
-      <div className="flex justify-between items-center" style={{ marginBottom: '0.5rem' }}>
-        <div className="flex items-center gap-sm text-sm" style={{ color: '#3b82f6', fontWeight: '500' }}>
-          <ChevronLeft size={16} />
-          <Link to="/recruiter/browse" className="hover:underline">Browse Students</Link>
-          <span style={{ color: '#94a3b8' }}>{'>'}</span>
-          <span style={{ color: '#64748b' }}>{candidate.name}</span>
-        </div>
-        {candidate.verified && (
-          <div className="badge" style={{ backgroundColor: '#ecfdf5', color: '#10B981', border: '1px solid #10B981', padding: '0.25rem 0.75rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-            <CheckCircle2 size={14} /> Verified
-          </div>
-        )}
-      </div>
-
-      {/* Main Profile Header Card */}
-      <div style={{ padding: '2rem 2.5rem', backgroundColor: 'white', borderRadius: '16px', border: '1px solid #E2E8F0', boxShadow: '0 4px 12px rgba(0,0,0,0.02)' }}>
-        
-        <div className="flex justify-between items-start" style={{ marginBottom: '2rem' }}>
-          <div className="flex gap-xl">
-            <img src={candidate.avatar} alt={candidate.name} style={{ width: '100px', height: '100px', borderRadius: '50%' }} />
-            <div className="flex-col justify-center">
-              <h1 className="h2 font-bold" style={{ color: '#0B2E4A', marginBottom: '0.25rem' }}>{candidate.name}</h1>
-              <p className="text-muted text-sm font-medium mb-2">{candidate.school}</p>
-              <div className="flex gap-lg text-xs text-muted">
-                <span className="flex items-center gap-xs"><MapPin size={14} /> {candidate.location}</span>
-                <span className="flex items-center gap-xs"><Mail size={14} /> {candidate.email}</span>
-              </div>
-            </div>
-          </div>
-          <div className="flex gap-md">
-            <button className="btn" style={{ padding: '0.6rem 1.25rem', backgroundColor: 'white', color: '#3b82f6', border: '1px solid #3b82f6', borderRadius: '12px', fontSize: '0.875rem' }}>
-              <Bookmark size={16} /> Save Candidate
-            </button>
-            <button className="btn" style={{ padding: '0.6rem 1.5rem', backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '12px', fontSize: '0.875rem' }}>
-              Contact
-            </button>
-          </div>
-        </div>
-
-        {/* Tabs */}
-        <div className="flex items-center gap-xl" style={{ borderBottom: '1px solid #E2E8F0', marginTop: '1rem' }}>
-          {['Overview', 'Skills & Evidence', 'Projects', 'Timeline'].map(tab => (
-            <button 
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              style={{ 
-                padding: '0.75rem 0', 
-                color: activeTab === tab ? '#3b82f6' : '#64748b', 
-                fontWeight: activeTab === tab ? '600' : '500',
-                borderBottom: activeTab === tab ? '3px solid #3b82f6' : '3px solid transparent',
-                background: 'none',
-                fontSize: '0.9375rem',
-                cursor: 'pointer'
-              }}
-            >
-              {tab}
-            </button>
-          ))}
+      {/* Back & Actions */}
+      <div className="flex items-center justify-between">
+        <button onClick={() => navigate('/recruiter/browse')} className="btn btn-secondary text-sm" style={{ padding: '0.5rem 1rem' }}>
+          <ChevronLeft size={16} /> Back to Search
+        </button>
+        <div className="flex gap-sm">
+          <button className="btn btn-secondary text-sm"><Mail size={16} /> Contact</button>
+          <button className="btn btn-primary text-sm"><Bookmark size={16} /> Shortlist</button>
         </div>
       </div>
 
-      {activeTab === 'Overview' && (
-        <div className="flex gap-lg">
-          
-          {/* Top Verified Skills */}
-          <div className="flex-col gap-md" style={{ flex: 2 }}>
-            <h3 className="h4 font-bold" style={{ color: '#0B2E4A', marginBottom: '0.5rem' }}>Top Verified Skills</h3>
-            <div className="grid md:grid-cols-2 gap-md">
-              
-              {/* Java Skill Card */}
-              <div className="card flex-col" style={{ padding: '1.5rem', borderRadius: '16px' }}>
-                <div className="flex justify-between items-center mb-2">
-                  <div className="flex items-center gap-sm">
-                    <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#3b82f6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <img src="https://www.svgrepo.com/show/353924/java.svg" alt="Java" style={{ width: '20px', height: '20px', filter: 'brightness(0) invert(1)' }} />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-sm" style={{ color: '#0B2E4A' }}>Java</h4>
-                      <p className="text-xs text-muted">Evidence Strength</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex justify-between items-end">
-                  <span className="font-bold" style={{ fontSize: '1.25rem', color: '#0B2E4A' }}>92/100</span>
-                  <div className="badge" style={{ backgroundColor: '#ecfdf5', color: '#10B981', border: '1px solid #10B981', fontSize: '0.7rem', padding: '0.15rem 0.5rem' }}>
-                    <ShieldCheck size={12} style={{ marginRight: '2px' }} /> Advanced
-                  </div>
-                </div>
-              </div>
-
-              {/* React Skill Card */}
-              <div className="card flex-col" style={{ padding: '1.5rem', borderRadius: '16px' }}>
-                <div className="flex justify-between items-center mb-2">
-                  <div className="flex items-center gap-sm">
-                    <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#3b82f6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <img src="https://www.svgrepo.com/show/354259/react.svg" alt="React" style={{ width: '20px', height: '20px', filter: 'brightness(0) invert(1)' }} />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-sm" style={{ color: '#0B2E4A' }}>React</h4>
-                      <p className="text-xs text-muted">Evidence Strength</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex justify-between items-end">
-                  <span className="font-bold" style={{ fontSize: '1.25rem', color: '#0B2E4A' }}>84/100</span>
-                  <div className="badge" style={{ backgroundColor: '#ecfdf5', color: '#10B981', border: '1px solid #10B981', fontSize: '0.7rem', padding: '0.15rem 0.5rem' }}>
-                    <ShieldCheck size={12} style={{ marginRight: '2px' }} /> Advanced
-                  </div>
-                </div>
-              </div>
-
-              {/* Python Skill Card */}
-              <div className="card flex-col" style={{ padding: '1.5rem', borderRadius: '16px' }}>
-                <div className="flex justify-between items-center mb-2">
-                  <div className="flex items-center gap-sm">
-                    <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#3b82f6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <img src="https://www.svgrepo.com/show/354238/python.svg" alt="Python" style={{ width: '20px', height: '20px', filter: 'brightness(0) invert(1)' }} />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-sm" style={{ color: '#0B2E4A' }}>Python</h4>
-                      <p className="text-xs text-muted">Evidence Strength</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex justify-between items-end">
-                  <span className="font-bold" style={{ fontSize: '1.25rem', color: '#0B2E4A' }}>76/100</span>
-                  <div className="badge" style={{ backgroundColor: '#eff6ff', color: '#3b82f6', border: '1px solid #3b82f6', fontSize: '0.7rem', padding: '0.15rem 0.5rem' }}>
-                    Intermediate
-                  </div>
-                </div>
-              </div>
-
-              {/* C++ Skill Card */}
-              <div className="card flex-col" style={{ padding: '1.5rem', borderRadius: '16px' }}>
-                <div className="flex justify-between items-center mb-2">
-                  <div className="flex items-center gap-sm">
-                    <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#3b82f6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <img src="https://www.svgrepo.com/show/353622/c-plusplus.svg" alt="C++" style={{ width: '20px', height: '20px', filter: 'brightness(0) invert(1)' }} />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-sm" style={{ color: '#0B2E4A' }}>C++</h4>
-                      <p className="text-xs text-muted">Evidence Strength</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex justify-between items-end">
-                  <span className="font-bold" style={{ fontSize: '1.25rem', color: '#0B2E4A' }}>68/100</span>
-                  <div className="badge" style={{ backgroundColor: '#eff6ff', color: '#3b82f6', border: '1px solid #3b82f6', fontSize: '0.7rem', padding: '0.15rem 0.5rem' }}>
-                    Intermediate
-                  </div>
-                </div>
-              </div>
-
+      {/* Header Profile Card */}
+      <div className="card flex items-start gap-lg" style={{ padding: '2rem' }}>
+        <img src={candidate.avatar} alt={candidate.name} style={{ width: '120px', height: '120px', borderRadius: '16px', border: '3px solid var(--border)' }} />
+        <div className="flex-col justify-between" style={{ flex: 1, minHeight: '120px' }}>
+          <div>
+            <div className="flex items-center gap-md">
+              <h1 className="h2 font-bold">{candidate.name}</h1>
+              {candidate.score > 90 && (
+                <span className="flex items-center gap-xs text-xs font-bold" style={{ color: 'var(--primary)', backgroundColor: 'var(--primary-light)', padding: '0.25rem 0.5rem', borderRadius: 'var(--radius-full)' }}>
+                  <Shield size={14} /> Top Talent
+                </span>
+              )}
+            </div>
+            <p className="text-lg text-muted mb-sm">{candidate.title}</p>
+            <div className="flex flex-wrap gap-md text-sm text-muted">
+              <span className="flex items-center gap-xs"><MapPin size={16} /> {candidate.location}</span>
+              <span className="flex items-center gap-xs"><Mail size={16} /> {candidate.email}</span>
+              <a href={`https://github.com/${candidate.github}`} target="_blank" rel="noreferrer" className="flex items-center gap-xs" style={{ color: 'var(--text-primary)', textDecoration: 'none' }}>
+                <Github size={16} /> github.com/{candidate.github}
+              </a>
             </div>
           </div>
-
-          {/* Quick Stats Sidebar */}
-          <div className="flex-col gap-md" style={{ flex: 1 }}>
-            <h3 className="h4 font-bold" style={{ color: '#0B2E4A', marginBottom: '0.5rem' }}>Quick Stats</h3>
-            <div className="card flex-col gap-lg" style={{ padding: '2rem 1.5rem', borderRadius: '16px' }}>
-              
-              <div className="flex gap-md items-center">
-                <div style={{ backgroundColor: '#eff6ff', padding: '0.6rem', borderRadius: '8px' }}><ShieldCheck size={20} color="#3b82f6" /></div>
-                <div>
-                  <p className="text-xs text-muted font-medium">Total Skills</p>
-                  <p className="font-bold" style={{ color: '#0B2E4A' }}>5</p>
-                </div>
-              </div>
-
-              <div className="flex gap-md items-center">
-                <div style={{ backgroundColor: '#eff6ff', padding: '0.6rem', borderRadius: '8px' }}><FolderCheck size={20} color="#3b82f6" /></div>
-                <div>
-                  <p className="text-xs text-muted font-medium">Total Evidence</p>
-                  <p className="font-bold" style={{ color: '#0B2E4A' }}>24</p>
-                </div>
-              </div>
-
-              <div className="flex gap-md items-center">
-                <div style={{ backgroundColor: '#eff6ff', padding: '0.6rem', borderRadius: '8px' }}><GitBranch size={20} color="#3b82f6" /></div>
-                <div>
-                  <p className="text-xs text-muted font-medium">Github Repos</p>
-                  <p className="font-bold" style={{ color: '#0B2E4A' }}>15</p>
-                </div>
-              </div>
-
-              <div className="flex gap-md items-center">
-                <div style={{ backgroundColor: '#eff6ff', padding: '0.6rem', borderRadius: '8px' }}><Code2 size={20} color="#3b82f6" /></div>
-                <div>
-                  <p className="text-xs text-muted font-medium">Coding Tasks</p>
-                  <p className="font-bold" style={{ color: '#0B2E4A' }}>32</p>
-                </div>
-              </div>
-
-              <div className="flex gap-md items-center">
-                <div style={{ backgroundColor: '#eff6ff', padding: '0.6rem', borderRadius: '8px' }}><Award size={20} color="#3b82f6" /></div>
-                <div>
-                  <p className="text-xs text-muted font-medium">Quiz Average</p>
-                  <p className="font-bold" style={{ color: '#0B2E4A' }}>82%</p>
-                </div>
-              </div>
-
-            </div>
-          </div>
-          
         </div>
-      )}
+        <div className="flex-col items-center justify-center" style={{ width: '120px', height: '120px', backgroundColor: 'var(--bg-tertiary)', borderRadius: '50%', border: '4px solid white', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
+          <span className="h2 font-bold text-primary" style={{ lineHeight: 1 }}>{candidate.score}</span>
+          <span className="text-xs font-semibold text-muted text-center leading-tight">Evidence<br/>Score</span>
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-3 gap-lg">
+        {/* Left Column: Skills & Info */}
+        <div className="flex-col gap-lg" style={{ gridColumn: 'span 1' }}>
+          <div className="card" style={{ padding: '1.5rem' }}>
+            <h3 className="h4 mb-md">Verified Skills</h3>
+            <div className="flex flex-wrap gap-sm">
+              {candidate.skills.map((skill, idx) => (
+                <div key={idx} className="flex items-center gap-xs" style={{ fontSize: '0.85rem', padding: '0.4rem 0.75rem', backgroundColor: '#f0fdfa', color: '#0f766e', borderRadius: 'var(--radius-md)', fontWeight: '600', border: '1px solid #ccfbf1' }}>
+                  <CheckCircle2 size={14} /> {skill}
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div className="card" style={{ padding: '1.5rem' }}>
+            <h3 className="h4 mb-md">About</h3>
+            <p className="text-sm text-muted" style={{ lineHeight: 1.6 }}>
+              Passionate {candidate.title} with a strong background in software engineering. Active participant in coding challenges and open source contributions. Always looking for the next challenging problem to solve.
+            </p>
+          </div>
+        </div>
+
+        {/* Right Column: Evidence */}
+        <div className="flex-col gap-lg" style={{ gridColumn: 'span 2' }}>
+          <div className="card" style={{ padding: '2rem' }}>
+            <h3 className="h3 mb-lg">Evidence Portfolio</h3>
+            
+            <div className="flex-col gap-md relative">
+              {/* Timeline line */}
+              <div style={{ position: 'absolute', top: 0, bottom: 0, left: '23px', width: '2px', backgroundColor: 'var(--border)', zIndex: 0 }}></div>
+              
+              {candidate.evidence.map((item, idx) => (
+                <div key={item.id} className="flex items-start gap-md relative" style={{ zIndex: 1 }}>
+                  <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: 'white', border: '2px solid var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, zIndex: 2 }}>
+                    {item.type === 'Project' ? <Github size={20} color="var(--primary)" /> : 
+                     item.type === 'Certificate' ? <Award size={20} color="var(--primary)" /> : 
+                     <Shield size={20} color="var(--primary)" />}
+                  </div>
+                  <div className="card" style={{ flex: 1, padding: '1.25rem', margin: 0 }}>
+                    <div className="flex items-center justify-between mb-sm">
+                      <h4 className="font-bold">{item.title}</h4>
+                      <span className="badge" style={{ backgroundColor: 'var(--primary-light)', color: 'var(--primary)' }}>{item.type}</span>
+                    </div>
+                    <p className="text-sm text-muted mb-md">Successfully verified {item.type.toLowerCase()} submission showing practical application of skills.</p>
+                    <div className="flex gap-sm">
+                      <button className="btn btn-secondary text-xs" style={{ padding: '0.4rem 0.8rem' }}>View Details</button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 }

@@ -1,52 +1,74 @@
-import React from 'react';
-import { Bookmark, Users, Code2, MapPin } from 'lucide-react';
-import ProgressRing from '../../components/ProgressRing';
+import React, { useState } from 'react';
+import { BookmarkMinus, Mail, ChevronRight, Shield, MapPin } from 'lucide-react';
+import { mockStudents } from '../../data/mockRecruiterData';
+import { useNavigate } from 'react-router-dom';
 
 export default function SavedCandidates() {
+  const navigate = useNavigate();
+  // We'll just assume the first two candidates are "saved" for demo purposes
+  const [saved, setSaved] = useState(mockStudents.slice(0, 2));
+
+  const removeCandidate = (id) => {
+    setSaved(saved.filter(s => s.id !== id));
+  };
+
   return (
-    <div className="flex-col gap-lg">
+    <div className="flex-col gap-lg animate-fade-in" style={{ paddingBottom: '2rem' }}>
       <div>
-        <h1 className="h2" style={{ marginBottom: '0.25rem' }}>Saved Candidates</h1>
-        <p className="text-muted">Review and manage candidates you've shortlisted.</p>
+        <h1 className="h2" style={{ marginBottom: '0.25rem' }}>Shortlisted Candidates</h1>
+        <p className="text-muted">Manage the candidates you are interested in moving forward with.</p>
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-md">
-        {[1, 2].map((_, i) => (
-          <div key={i} className="card flex-col justify-between" style={{ border: '1px solid var(--primary)' }}>
-            <div className="flex items-start justify-between" style={{ marginBottom: '1.5rem' }}>
-              <div className="flex items-center gap-sm">
-                <div style={{ width: '40px', height: '40px', borderRadius: 'var(--radius-full)', backgroundColor: 'var(--bg-tertiary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Users size={20} color="var(--primary)" />
-                </div>
+      <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+        <div className="flex-col">
+          {saved.length > 0 ? saved.map((student, i) => (
+            <div key={student.id} className="flex items-center justify-between flex-wrap gap-md" style={{ padding: '1.5rem 2rem', borderBottom: i !== saved.length - 1 ? '1px solid var(--border)' : 'none' }}>
+              <div className="flex items-center gap-md">
+                <img src={student.avatar} alt={student.name} style={{ width: '64px', height: '64px', borderRadius: '50%', border: '2px solid var(--border)' }} />
                 <div>
-                  <h3 className="font-semibold">Candidate #{1042 - i}</h3>
-                  <p className="text-xs text-muted">Frontend Developer</p>
+                  <h3 className="h4 font-bold flex items-center gap-xs">
+                    {student.name}
+                    {student.score > 90 && <Shield size={16} color="var(--primary)" />}
+                  </h3>
+                  <p className="text-sm text-muted">{student.title}</p>
+                  <div className="flex items-center gap-sm mt-xs text-xs text-muted">
+                    <span className="flex items-center gap-xs"><MapPin size={12} /> {student.location}</span>
+                    <span>&bull;</span>
+                    <span className="font-semibold text-primary">{student.score}/100 Evidence Score</span>
+                  </div>
                 </div>
               </div>
-              <button className="btn-icon" style={{ color: 'var(--primary)' }}><Bookmark size={20} fill="var(--primary)" /></button>
-            </div>
-            
-            <div className="flex items-center justify-between" style={{ marginBottom: '1.5rem', backgroundColor: 'var(--bg-tertiary)', padding: '1rem', borderRadius: 'var(--radius-md)' }}>
-              <div className="flex items-center gap-sm">
-                <Code2 size={20} color="var(--primary)" />
-                <span className="font-medium">React.js</span>
-              </div>
-              <div className="flex items-center gap-sm">
-                <div style={{ width: '32px', height: '32px' }}>
-                  <ProgressRing radius={16} stroke={3} progress={92 - i * 5} color="var(--primary)" />
+              
+              <div className="flex items-center gap-md">
+                <div className="flex flex-wrap gap-xs hidden md:flex" style={{ maxWidth: '200px' }}>
+                  {student.skills.slice(0, 3).map((skill, idx) => (
+                    <span key={idx} style={{ fontSize: '0.7rem', padding: '0.2rem 0.5rem', backgroundColor: 'var(--bg-tertiary)', borderRadius: '4px', color: 'var(--text-primary)' }}>{skill}</span>
+                  ))}
+                  {student.skills.length > 3 && <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>+{student.skills.length - 3}</span>}
                 </div>
-                <span className="font-semibold text-sm">{92 - i * 5}</span>
+                
+                <div className="flex gap-sm ml-md">
+                  <button onClick={() => removeCandidate(student.id)} className="btn-icon" title="Remove from Shortlist">
+                    <BookmarkMinus size={20} color="#ef4444" />
+                  </button>
+                  <button className="btn-icon" title="Contact Candidate">
+                    <Mail size={20} />
+                  </button>
+                  <button onClick={() => navigate(`/recruiter/candidate/${student.id}`)} className="btn btn-secondary text-sm">
+                    View <ChevronRight size={16} />
+                  </button>
+                </div>
               </div>
             </div>
-
-            <div className="flex items-center justify-between" style={{ paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
-              <div className="text-xs text-muted flex items-center gap-xs">
-                <MapPin size={14} /> Remote
-              </div>
-              <button className="btn btn-secondary text-sm" style={{ padding: '0.5rem 1rem' }}>View Profile</button>
+          )) : (
+            <div style={{ padding: '4rem', textAlign: 'center' }}>
+              <BookmarkMinus size={48} color="var(--border)" style={{ margin: '0 auto 1rem auto' }} />
+              <h3 className="h4 mb-xs">No Shortlisted Candidates</h3>
+              <p className="text-muted">You haven't saved any candidates yet. Go browse some talent!</p>
+              <button onClick={() => navigate('/recruiter/browse')} className="btn btn-primary mt-md" style={{ margin: '1.5rem auto 0 auto' }}>Browse Candidates</button>
             </div>
-          </div>
-        ))}
+          )}
+        </div>
       </div>
     </div>
   );
