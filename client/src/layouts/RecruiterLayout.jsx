@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard, 
   Users, 
@@ -8,18 +8,20 @@ import {
   LogOut,
   Shield,
   Search,
-  Bell
+  Briefcase
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export default function RecruiterLayout() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { user, logout } = useAuth();
   
   const navItems = [
     { name: 'Dashboard', path: '/recruiter', icon: LayoutDashboard },
-    { name: 'Browse Students', path: '/recruiter/browse', icon: Users },
-    { name: 'Saved Candidates', path: '/recruiter/saved', icon: Bookmark },
+    { name: 'Find Candidates', path: '/recruiter/browse', icon: Search },
+    { name: 'Shortlisted', path: '/recruiter/saved', icon: Bookmark },
+    { name: 'Jobs / Opportunities', path: '/recruiter/jobs', icon: Briefcase },
     { name: 'Settings', path: '/recruiter/settings', icon: Settings },
   ];
 

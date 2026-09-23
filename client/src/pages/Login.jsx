@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 export default function Login() {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [formData, setFormData] = useState({ email: '', password: '', role: 'student' });
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -75,6 +75,26 @@ export default function Login() {
           <p className="text-muted" style={{ marginBottom: '2.5rem' }}>Don't have an account? <Link to="/register" className="font-semibold" style={{ color: '#14B8A6' }}>Register</Link></p>
           
           <form onSubmit={handleLogin} className="flex-col gap-lg">
+            <div style={{ marginBottom: '0.5rem' }}>
+              <label className="text-sm font-semibold" style={{ display: 'block', marginBottom: '0.5rem', color: '#1E293B' }}>I am a</label>
+              <div className="flex gap-sm">
+                <button 
+                  type="button" 
+                  className="btn" 
+                  style={{ flex: 1, padding: '0.75rem', borderRadius: '12px', fontWeight: '600', backgroundColor: formData.role === 'student' ? '#14B8A6' : 'white', color: formData.role === 'student' ? 'white' : '#64748B', border: formData.role === 'student' ? 'none' : '1px solid #E2E8F0' }} 
+                  onClick={() => setFormData({...formData, role: 'student'})}>
+                  Student
+                </button>
+                <button 
+                  type="button" 
+                  className="btn" 
+                  style={{ flex: 1, padding: '0.75rem', borderRadius: '12px', fontWeight: '600', backgroundColor: formData.role === 'recruiter' ? '#14B8A6' : 'white', color: formData.role === 'recruiter' ? 'white' : '#64748B', border: formData.role === 'recruiter' ? 'none' : '1px solid #E2E8F0' }} 
+                  onClick={() => setFormData({...formData, role: 'recruiter'})}>
+                  Recruiter
+                </button>
+              </div>
+            </div>
+
             <div>
               <label className="text-sm font-semibold" style={{ display: 'block', marginBottom: '0.5rem', color: '#1E293B' }}>Email or Username</label>
               <input 
