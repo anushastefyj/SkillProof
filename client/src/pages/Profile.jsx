@@ -53,9 +53,15 @@ export default function Profile() {
           {/* Profile Overview */}
           <div className="card" style={{ padding: '2rem' }}>
             <div className="flex items-start gap-lg mb-lg">
-              <div style={{ width: '90px', height: '90px', borderRadius: '50%', backgroundColor: 'var(--primary)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem', fontWeight: 'bold', flexShrink: 0 }}>
-                {getInitials(personalInfo.name)}
-              </div>
+              {personalInfo.avatar ? (
+                <div style={{ width: '90px', height: '90px', borderRadius: '50%', flexShrink: 0, overflow: 'hidden' }}>
+                  <img src={personalInfo.avatar} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </div>
+              ) : (
+                <div style={{ width: '90px', height: '90px', borderRadius: '50%', backgroundColor: 'var(--primary)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem', fontWeight: 'bold', flexShrink: 0 }}>
+                  {getInitials(personalInfo.name)}
+                </div>
+              )}
               <div>
                 <h2 className="h3 font-bold mb-1" style={{ color: '#0B2E4A', fontSize: '1.5rem' }}>{personalInfo.name}</h2>
                 <p className="font-semibold text-primary mb-3">{personalInfo.title}</p>

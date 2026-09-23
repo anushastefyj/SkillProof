@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Shield, CheckCircle2, User, Briefcase, Code, GraduationCap, FolderGit2, Award, Trophy, Save, Eye, Plus, ArrowLeft, Trash2, Edit2 } from 'lucide-react';
 import { useProfile } from '../context/ProfileContext';
@@ -18,6 +18,18 @@ const tabs = [
 export default function EnhanceProfile() {
   const [activeTab, setActiveTab] = useState('Personal Info');
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
+
+  const handlePhotoUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPersonalInfo({ ...personalInfo, avatar: reader.result });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const { 
     personalInfo, setPersonalInfo,
@@ -242,9 +254,10 @@ export default function EnhanceProfile() {
               
               <div className="flex items-center gap-md mb-md">
                 <div style={{ width: '100px', height: '100px', borderRadius: '50%', backgroundColor: 'var(--bg-tertiary)', overflow: 'hidden' }}>
-                  <img src="https://ui-avatars.com/api/?name=Anusha+Stefy&background=00b894&color=fff&size=100" alt="Avatar" />
+                  <img src={personalInfo.avatar || "https://ui-avatars.com/api/?name=Anusha+Stefy&background=00b894&color=fff&size=100"} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
-                <button className="btn btn-secondary text-sm">Upload Photo</button>
+                <button onClick={() => fileInputRef.current.click()} className="btn btn-secondary text-sm">Upload Photo</button>
+                <input type="file" accept="image/*" ref={fileInputRef} onChange={handlePhotoUpload} style={{ display: 'none' }} />
               </div>
 
               <div className="grid sm:grid-cols-2 gap-md">
@@ -828,15 +841,19 @@ export default function EnhanceProfile() {
       {/* Floating Action Bar */}
       <div className="fixed bottom-0 left-0 right-0 p-md" style={{ backgroundColor: 'white', borderTop: '1px solid var(--border)', zIndex: 50, boxShadow: '0 -4px 12px rgba(0,0,0,0.05)' }}>
         <div className="max-w-7xl mx-auto flex justify-end gap-md pr-xl">
-          <button onClick={() => navigate('/dashboard/profile')} className="btn btn-secondary">
+          <Link to="/dashboard/profile" className="btn btn-secondary">
             <Eye size={18} /> Preview Profile
-          </button>
-          <button onClick={() => alert('Changes are auto-saved to context!')} className="btn text-primary" style={{ border: '1px solid var(--primary)', backgroundColor: 'transparent' }}>
+          </Link>
+          <button onClick={(e) => {
+            const originalHTML = e.currentTarget.innerHTML;
+            e.currentTarget.innerHTML = '<span style="display:flex;align-items:center;gap:4px;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Saved!</span>';
+            setTimeout(() => { e.currentTarget.innerHTML = originalHTML; }, 2000);
+          }} className="btn text-primary" style={{ border: '1px solid var(--primary)', backgroundColor: 'transparent' }}>
             <Save size={18} /> Save Changes
           </button>
-          <button onClick={() => navigate('/dashboard/profile')} className="btn btn-primary">
+          <Link to="/dashboard/profile" className="btn btn-primary">
             Save & View Profile
-          </button>
+          </Link>
         </div>
       </div>
 
