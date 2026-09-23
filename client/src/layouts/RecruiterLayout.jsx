@@ -75,7 +75,7 @@ export default function RecruiterLayout() {
 
         <div style={{ padding: '1rem' }}>
           <button
-            onClick={() => { logout(); }}
+            onClick={() => { logout(); navigate('/login'); }}
             style={{
               display: 'flex',
               alignItems: 'center',
