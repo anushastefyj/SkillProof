@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard, 
   Code2, 
@@ -18,6 +18,7 @@ import { useProfile } from '../context/ProfileContext';
 
 export default function MainLayout() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { user, logout } = useAuth();
   const { personalInfo } = useProfile();
   
@@ -82,7 +83,7 @@ export default function MainLayout() {
 
         <div style={{ padding: '1rem' }}>
           <button
-            onClick={() => { logout(); }}
+            onClick={() => { logout(); navigate('/login'); }}
             style={{
               display: 'flex',
               alignItems: 'center',
