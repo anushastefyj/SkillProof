@@ -32,12 +32,24 @@ export default function EnhanceProfile() {
 
   const [newSkill, setNewSkill] = useState({ name: '', category: 'Programming Language', level: 'Beginner' });
   const [isAddingSkill, setIsAddingSkill] = useState(false);
+  const [editingSkillId, setEditingSkillId] = useState(null);
 
-  const handleAddSkill = () => {
+  const handleEditSkill = (skill) => {
+    setNewSkill(skill);
+    setEditingSkillId(skill.id);
+    setIsAddingSkill(true);
+  };
+  const handleDeleteSkill = (id) => setSkills(skills.filter(s => s.id !== id));
+  const handleSaveSkill = () => {
     if (newSkill.name.trim() !== '') {
-      setSkills([...skills, { id: Date.now(), ...newSkill, verified: false, projects: 0, tasks: 0, score: 0, github: false }]);
+      if (editingSkillId) {
+        setSkills(skills.map(s => s.id === editingSkillId ? { ...s, ...newSkill } : s));
+      } else {
+        setSkills([...skills, { id: Date.now(), ...newSkill, verified: false, projects: 0, tasks: 0, score: 0, github: false }]);
+      }
       setNewSkill({ name: '', category: 'Programming Language', level: 'Beginner' });
       setIsAddingSkill(false);
+      setEditingSkillId(null);
     }
   };
 
@@ -320,14 +332,14 @@ export default function EnhanceProfile() {
             <div className="flex-col gap-lg animate-fade-in">
               <div className="flex items-center justify-between mb-sm">
                 <h3 className="h4 font-bold">Skills</h3>
-                <button onClick={() => setIsAddingSkill(!isAddingSkill)} className="btn btn-primary text-sm px-sm py-xs">
+                <button onClick={() => { setIsAddingSkill(!isAddingSkill); setEditingSkillId(null); setNewSkill({ name: '', category: 'Programming Language', level: 'Beginner' }); }} className="btn btn-primary text-sm px-sm py-xs">
                   <Plus size={16} /> Add Skill
                 </button>
               </div>
 
               {isAddingSkill && (
                 <div className="p-lg rounded-xl mb-md" style={{ backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border)' }}>
-                  <h4 className="font-bold mb-md">Add New Skill</h4>
+                  <h4 className="font-bold mb-md">{editingSkillId ? 'Edit' : 'Add'} Skill</h4>
                   <div className="grid sm:grid-cols-2 gap-md mb-md">
                     <div>
                       <label className="text-sm font-semibold mb-1 block">Skill Name</label>
@@ -360,7 +372,7 @@ export default function EnhanceProfile() {
                   </div>
                   <div className="flex justify-end gap-sm">
                     <button onClick={() => setIsAddingSkill(false)} className="btn btn-secondary">Cancel</button>
-                    <button onClick={handleAddSkill} className="btn btn-primary">Save Skill</button>
+                    <button onClick={handleSaveSkill} className="btn btn-primary">Save Skill</button>
                   </div>
                 </div>
               )}
@@ -403,8 +415,8 @@ export default function EnhanceProfile() {
                     )}
                     
                     <div className="flex items-center gap-sm mt-md pt-sm" style={{ borderTop: '1px solid var(--border)' }}>
-                      <button className="text-xs font-semibold text-primary flex items-center gap-xs"><Edit2 size={12} /> Edit</button>
-                      <button className="text-xs font-semibold text-red-500 flex items-center gap-xs"><Trash2 size={12} /> Remove</button>
+                      <button onClick={() => handleEditSkill(skill)} className="text-xs font-semibold text-primary flex items-center gap-xs"><Edit2 size={12} /> Edit</button>
+                      <button onClick={() => handleDeleteSkill(skill.id)} className="text-xs font-semibold text-red-500 flex items-center gap-xs"><Trash2 size={12} /> Remove</button>
                     </div>
                   </div>
                 ))}
@@ -816,10 +828,10 @@ export default function EnhanceProfile() {
       {/* Floating Action Bar */}
       <div className="fixed bottom-0 left-0 right-0 p-md" style={{ backgroundColor: 'white', borderTop: '1px solid var(--border)', zIndex: 50, boxShadow: '0 -4px 12px rgba(0,0,0,0.05)' }}>
         <div className="max-w-7xl mx-auto flex justify-end gap-md pr-xl">
-          <button className="btn btn-secondary">
+          <button onClick={() => navigate('/dashboard/profile')} className="btn btn-secondary">
             <Eye size={18} /> Preview Profile
           </button>
-          <button className="btn text-primary" style={{ border: '1px solid var(--primary)', backgroundColor: 'transparent' }}>
+          <button onClick={() => alert('Changes are auto-saved to context!')} className="btn text-primary" style={{ border: '1px solid var(--primary)', backgroundColor: 'transparent' }}>
             <Save size={18} /> Save Changes
           </button>
           <button onClick={() => navigate('/dashboard/profile')} className="btn btn-primary">
