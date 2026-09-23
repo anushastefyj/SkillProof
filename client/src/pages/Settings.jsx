@@ -27,6 +27,16 @@ const ToggleSwitch = ({ label, defaultOn }) => {
 
 export default function Settings() {
   const [activeTab, setActiveTab] = useState('Account');
+  const [accountData, setAccountData] = useState({
+    email: 'anusha@example.com',
+    username: 'anusha-stefy',
+    phone: ''
+  });
+  const [visibility, setVisibility] = useState('Public');
+  const [theme, setTheme] = useState('Dark');
+  const [language, setLanguage] = useState('en');
+  const [dashboard, setDashboard] = useState('Skill Overview');
+  const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
 
   return (
     <div className="flex-col gap-lg animate-fade-in" style={{ paddingBottom: '2rem' }}>
@@ -66,23 +76,23 @@ export default function Settings() {
               <div className="flex-col gap-md">
                 <div>
                   <label className="text-sm font-semibold mb-1" style={{ display: 'block', color: '#0f172a' }}>Email</label>
-                  <input type="email" className="input-field" defaultValue="anusha@example.com" />
+                  <input type="email" className="input-field" value={accountData.email} onChange={e => setAccountData({...accountData, email: e.target.value})} />
                 </div>
                 <div>
                   <label className="text-sm font-semibold mb-1" style={{ display: 'block', color: '#0f172a' }}>Username</label>
-                  <input type="text" className="input-field" defaultValue="anusha-stefy" />
+                  <input type="text" className="input-field" value={accountData.username} onChange={e => setAccountData({...accountData, username: e.target.value})} />
                 </div>
                 <div>
                   <label className="text-sm font-semibold mb-1" style={{ display: 'block', color: '#0f172a' }}>Phone Number</label>
-                  <input type="tel" className="input-field" placeholder="+91 98765 43210" />
+                  <input type="tel" className="input-field" placeholder="+91 98765 43210" value={accountData.phone} onChange={e => setAccountData({...accountData, phone: e.target.value})} />
                 </div>
               </div>
               
               <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1.5rem', marginTop: '0.5rem' }}>
-                <button type="button" className="btn btn-secondary text-sm mb-md w-full" style={{ padding: '0.75rem', justifyContent: 'center' }}>
+                <button type="button" onClick={() => alert('Password change email sent!')} className="btn btn-secondary text-sm mb-md w-full" style={{ padding: '0.75rem', justifyContent: 'center' }}>
                   <Key size={16} /> Change Password
                 </button>
-                <button type="button" className="btn text-sm w-full" style={{ padding: '0.75rem', justifyContent: 'center', backgroundColor: '#fef2f2', color: '#ef4444', border: '1px solid #fca5a5' }}>
+                <button type="button" onClick={() => { if(window.confirm('Are you sure you want to delete your account? This is irreversible.')) { alert('Account deleted.'); } }} className="btn text-sm w-full" style={{ padding: '0.75rem', justifyContent: 'center', backgroundColor: '#fef2f2', color: '#ef4444', border: '1px solid #fca5a5' }}>
                   <Trash2 size={16} /> Delete Account
                 </button>
               </div>
@@ -96,15 +106,15 @@ export default function Settings() {
                 <h3 className="h5 font-bold mb-md">Profile Visibility</h3>
                 <div className="flex-col gap-sm">
                   <label className="flex items-center gap-sm cursor-pointer">
-                    <input type="radio" name="visibility" defaultChecked style={{ width: '16px', height: '16px', accentColor: '#14B8A6' }} />
+                    <input type="radio" name="visibility" checked={visibility === 'Public'} onChange={() => setVisibility('Public')} style={{ width: '16px', height: '16px', accentColor: '#14B8A6' }} />
                     <span className="font-medium text-sm">Public</span>
                   </label>
                   <label className="flex items-center gap-sm cursor-pointer">
-                    <input type="radio" name="visibility" style={{ width: '16px', height: '16px', accentColor: '#14B8A6' }} />
+                    <input type="radio" name="visibility" checked={visibility === 'Recruiters Only'} onChange={() => setVisibility('Recruiters Only')} style={{ width: '16px', height: '16px', accentColor: '#14B8A6' }} />
                     <span className="font-medium text-sm">Recruiters Only</span>
                   </label>
                   <label className="flex items-center gap-sm cursor-pointer">
-                    <input type="radio" name="visibility" style={{ width: '16px', height: '16px', accentColor: '#14B8A6' }} />
+                    <input type="radio" name="visibility" checked={visibility === 'Private'} onChange={() => setVisibility('Private')} style={{ width: '16px', height: '16px', accentColor: '#14B8A6' }} />
                     <span className="font-medium text-sm">Private</span>
                   </label>
                 </div>
@@ -143,7 +153,7 @@ export default function Settings() {
               <div>
                 <h3 className="h5 font-bold mb-md">Authentication</h3>
                 <div className="flex-col gap-md">
-                  <button type="button" className="btn btn-secondary text-sm w-full" style={{ padding: '0.75rem', justifyContent: 'center' }}>
+                  <button type="button" onClick={() => alert('Password change email sent!')} className="btn btn-secondary text-sm w-full" style={{ padding: '0.75rem', justifyContent: 'center' }}>
                     <Key size={16} /> Change Password
                   </button>
                   <div className="flex items-center justify-between" style={{ padding: '1rem', backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '12px' }}>
@@ -151,8 +161,8 @@ export default function Settings() {
                       <h4 className="font-bold text-sm">Two-Factor Authentication</h4>
                       <p className="text-xs text-muted mt-1">Add an extra layer of security.</p>
                     </div>
-                    <button type="button" className="btn btn-primary text-sm" style={{ padding: '0.5rem 1rem' }}>
-                      <Shield size={14} /> Enable
+                    <button type="button" onClick={() => setTwoFactorEnabled(!twoFactorEnabled)} className={`btn ${twoFactorEnabled ? 'btn-secondary' : 'btn-primary'} text-sm`} style={{ padding: '0.5rem 1rem' }}>
+                      <Shield size={14} /> {twoFactorEnabled ? 'Disable' : 'Enable'}
                     </button>
                   </div>
                 </div>
@@ -191,15 +201,15 @@ export default function Settings() {
                 <h3 className="h5 font-bold mb-md">Theme</h3>
                 <div className="flex-col gap-sm">
                   <label className="flex items-center gap-sm cursor-pointer">
-                    <input type="radio" name="theme" style={{ width: '16px', height: '16px', accentColor: '#14B8A6' }} />
+                    <input type="radio" name="theme" checked={theme === 'Light'} onChange={() => setTheme('Light')} style={{ width: '16px', height: '16px', accentColor: '#14B8A6' }} />
                     <span className="font-medium text-sm flex items-center gap-sm"><Sun size={16} /> Light</span>
                   </label>
                   <label className="flex items-center gap-sm cursor-pointer">
-                    <input type="radio" name="theme" defaultChecked style={{ width: '16px', height: '16px', accentColor: '#14B8A6' }} />
+                    <input type="radio" name="theme" checked={theme === 'Dark'} onChange={() => setTheme('Dark')} style={{ width: '16px', height: '16px', accentColor: '#14B8A6' }} />
                     <span className="font-medium text-sm flex items-center gap-sm"><Moon size={16} /> Dark</span>
                   </label>
                   <label className="flex items-center gap-sm cursor-pointer">
-                    <input type="radio" name="theme" style={{ width: '16px', height: '16px', accentColor: '#14B8A6' }} />
+                    <input type="radio" name="theme" checked={theme === 'System'} onChange={() => setTheme('System')} style={{ width: '16px', height: '16px', accentColor: '#14B8A6' }} />
                     <span className="font-medium text-sm flex items-center gap-sm"><Monitor size={16} /> System</span>
                   </label>
                 </div>
@@ -207,7 +217,7 @@ export default function Settings() {
 
               <div>
                 <h3 className="h5 font-bold mb-sm">Language</h3>
-                <select className="input-field" defaultValue="en">
+                <select className="input-field" value={language} onChange={e => setLanguage(e.target.value)}>
                   <option value="en">English</option>
                   <option value="te">Telugu</option>
                   <option value="hi">Hindi</option>
@@ -218,11 +228,11 @@ export default function Settings() {
                 <h3 className="h5 font-bold mb-md">Default Dashboard</h3>
                 <div className="flex-col gap-sm">
                   <label className="flex items-center gap-sm cursor-pointer">
-                    <input type="radio" name="dashboard" style={{ width: '16px', height: '16px', accentColor: '#14B8A6' }} />
+                    <input type="radio" name="dashboard" checked={dashboard === 'Profile'} onChange={() => setDashboard('Profile')} style={{ width: '16px', height: '16px', accentColor: '#14B8A6' }} />
                     <span className="font-medium text-sm flex items-center gap-sm">Profile</span>
                   </label>
                   <label className="flex items-center gap-sm cursor-pointer">
-                    <input type="radio" name="dashboard" defaultChecked style={{ width: '16px', height: '16px', accentColor: '#14B8A6' }} />
+                    <input type="radio" name="dashboard" checked={dashboard === 'Skill Overview'} onChange={() => setDashboard('Skill Overview')} style={{ width: '16px', height: '16px', accentColor: '#14B8A6' }} />
                     <span className="font-medium text-sm flex items-center gap-sm">Skill Overview</span>
                   </label>
                 </div>
