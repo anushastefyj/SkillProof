@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Shield, Key, Trash2, Smartphone, Bell, Eye, EyeOff, LayoutDashboard, Monitor, Moon, Sun } from 'lucide-react';
 
 const ToggleSwitch = ({ label, defaultOn }) => {
@@ -33,10 +33,24 @@ export default function Settings() {
     phone: ''
   });
   const [visibility, setVisibility] = useState('Public');
-  const [theme, setTheme] = useState('Dark');
+  const [theme, setTheme] = useState(document.documentElement.classList.contains('dark-theme') ? 'Dark' : 'Light');
   const [language, setLanguage] = useState('en');
   const [dashboard, setDashboard] = useState('Skill Overview');
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
+
+  useEffect(() => {
+    if (theme === 'Dark') {
+      document.documentElement.classList.add('dark-theme');
+    } else if (theme === 'Light') {
+      document.documentElement.classList.remove('dark-theme');
+    } else {
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.classList.add('dark-theme');
+      } else {
+        document.documentElement.classList.remove('dark-theme');
+      }
+    }
+  }, [theme]);
 
   return (
     <div className="flex-col gap-lg animate-fade-in" style={{ paddingBottom: '2rem' }}>
