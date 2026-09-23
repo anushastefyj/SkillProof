@@ -14,10 +14,12 @@ import {
   Bell
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useProfile } from '../context/ProfileContext';
 
 export default function MainLayout() {
   const location = useLocation();
   const { user, logout } = useAuth();
+  const { personalInfo } = useProfile();
   
   const navItems = [
     { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
@@ -118,13 +120,21 @@ export default function MainLayout() {
                 style={{ padding: '0.6rem 1rem 0.6rem 2.5rem', borderRadius: '12px', border: '1px solid #E2E8F0', outline: 'none', fontSize: '0.9rem', width: '250px' }} 
               />
             </div>
-            <div style={{ position: 'relative', cursor: 'pointer' }}>
+            <button onClick={() => alert('No new notifications at this time.')} style={{ position: 'relative', cursor: 'pointer', background: 'none', border: 'none', padding: 0 }}>
               <Bell size={20} color="#64748B" />
               <div style={{ position: 'absolute', top: 0, right: 0, width: '8px', height: '8px', backgroundColor: '#ef4444', borderRadius: '50%' }}></div>
-            </div>
-            <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: '#14B8A6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', overflow: 'hidden' }}>
-              {user?.name?.charAt(0) || 'A'}
-            </div>
+            </button>
+            <Link to="/dashboard/settings" style={{ cursor: 'pointer' }}>
+              {personalInfo?.avatar ? (
+                <div style={{ width: '36px', height: '36px', borderRadius: '50%', overflow: 'hidden' }}>
+                  <img src={personalInfo.avatar} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </div>
+              ) : (
+                <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: '#14B8A6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', overflow: 'hidden' }}>
+                  {personalInfo?.name ? personalInfo.name.charAt(0).toUpperCase() : 'A'}
+                </div>
+              )}
+            </Link>
           </div>
         </header>
 
