@@ -15,6 +15,11 @@ export default function Profile() {
     return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
   };
 
+  const verifiedSkills = skills.filter(s => s.verified);
+  const overallScore = verifiedSkills.length > 0 
+    ? Math.round(verifiedSkills.reduce((acc, curr) => acc + curr.score, 0) / verifiedSkills.length)
+    : 0;
+
   return (
     <div className="flex-col gap-lg animate-fade-in" style={{ paddingBottom: '2rem' }}>
       {/* HEADER */}
@@ -188,10 +193,10 @@ export default function Profile() {
                 {/* Simulated SVG circle chart */}
                 <svg width="140" height="140" viewBox="0 0 140 140" style={{ transform: 'rotate(-90deg)' }}>
                   <circle cx="70" cy="70" r="60" fill="none" stroke="var(--border)" strokeWidth="12" />
-                  <circle cx="70" cy="70" r="60" fill="none" stroke="var(--primary)" strokeWidth="12" strokeDasharray="377" strokeDashoffset={377 - (377 * 78) / 100} style={{ transition: 'stroke-dashoffset 1s ease' }} />
+                  <circle cx="70" cy="70" r="60" fill="none" stroke="var(--primary)" strokeWidth="12" strokeDasharray="377" strokeDashoffset={377 - (377 * overallScore) / 100} style={{ transition: 'stroke-dashoffset 1s ease' }} />
                 </svg>
                 <div style={{ position: 'absolute', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  <span style={{ fontSize: '2.5rem', fontWeight: '800', lineHeight: '1', color: '#0B2E4A' }}>78</span>
+                  <span style={{ fontSize: '2.5rem', fontWeight: '800', lineHeight: '1', color: '#0B2E4A' }}>{overallScore}</span>
                   <span className="text-sm font-semibold text-muted">/ 100</span>
                 </div>
               </div>
@@ -203,34 +208,19 @@ export default function Profile() {
                 <p className="text-sm text-muted mb-md">Calculated from actual verified evidence</p>
                 
                 <div className="flex flex-col gap-sm">
-                  <div className="flex items-center gap-md">
-                    <span className="font-semibold text-sm w-20">Java</span>
-                    <div style={{ flex: 1, height: '6px', backgroundColor: 'var(--border)', borderRadius: '3px' }}>
-                      <div style={{ width: '84%', height: '100%', backgroundColor: 'var(--primary)', borderRadius: '3px' }}></div>
-                    </div>
-                    <span className="font-semibold text-sm text-muted">84</span>
-                  </div>
-                  <div className="flex items-center gap-md">
-                    <span className="font-semibold text-sm w-20">React</span>
-                    <div style={{ flex: 1, height: '6px', backgroundColor: 'var(--border)', borderRadius: '3px' }}>
-                      <div style={{ width: '76%', height: '100%', backgroundColor: 'var(--primary)', borderRadius: '3px' }}></div>
-                    </div>
-                    <span className="font-semibold text-sm text-muted">76</span>
-                  </div>
-                  <div className="flex items-center gap-md">
-                    <span className="font-semibold text-sm w-20">SQL</span>
-                    <div style={{ flex: 1, height: '6px', backgroundColor: 'var(--border)', borderRadius: '3px' }}>
-                      <div style={{ width: '71%', height: '100%', backgroundColor: 'var(--primary)', borderRadius: '3px' }}></div>
-                    </div>
-                    <span className="font-semibold text-sm text-muted">71</span>
-                  </div>
-                  <div className="flex items-center gap-md">
-                    <span className="font-semibold text-sm w-20">MongoDB</span>
-                    <div style={{ flex: 1, height: '6px', backgroundColor: 'var(--border)', borderRadius: '3px' }}>
-                      <div style={{ width: '68%', height: '100%', backgroundColor: 'var(--primary)', borderRadius: '3px' }}></div>
-                    </div>
-                    <span className="font-semibold text-sm text-muted">68</span>
-                  </div>
+                  {verifiedSkills.length > 0 ? (
+                    verifiedSkills.slice(0, 4).map(skill => (
+                      <div key={skill.id} className="flex items-center gap-md">
+                        <span className="font-semibold text-sm w-20 truncate">{skill.name}</span>
+                        <div style={{ flex: 1, height: '6px', backgroundColor: 'var(--border)', borderRadius: '3px' }}>
+                          <div style={{ width: `${skill.score}%`, height: '100%', backgroundColor: 'var(--primary)', borderRadius: '3px' }}></div>
+                        </div>
+                        <span className="font-semibold text-sm text-muted">{skill.score}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-sm text-muted">No verified skills yet. Complete tasks or quizzes to earn your score.</p>
+                  )}
                 </div>
               </div>
             </div>
