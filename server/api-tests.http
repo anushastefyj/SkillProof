@@ -1,0 +1,92 @@
+### SkillProof API Tests
+### Use REST Client extension in VSCode to run these tests independently.
+
+@baseUrl = http://localhost:5000/api
+
+### 1. Register a new user
+# @name registerUser
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "email": "test@example.com",
+  "password": "password123",
+  "role": "student"
+}
+
+###
+
+### 2. Login user
+# @name loginUser
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+###
+
+@token = {{loginUser.response.body.token}}
+
+### 3. Get Auth User
+GET {{baseUrl}}/auth
+x-auth-token: {{token}}
+
+###
+
+### 4. Add a Skill
+# @name addSkill
+POST {{baseUrl}}/skills
+Content-Type: application/json
+x-auth-token: {{token}}
+
+{
+  "name": "React.js",
+  "level": "Beginner"
+}
+
+###
+
+@skillId = {{addSkill.response.body._id}}
+
+### 5. Get Skills
+GET {{baseUrl}}/skills
+x-auth-token: {{token}}
+
+###
+
+### 6. Add Evidence (Project) -> Should boost score by 15
+POST {{baseUrl}}/evidence
+Content-Type: application/json
+x-auth-token: {{token}}
+
+{
+  "skillId": "{{skillId}}",
+  "type": "project",
+  "title": "E-commerce App",
+  "description": "Built with React and Node",
+  "url": "https://github.com/test/ecommerce"
+}
+
+###
+
+### 7. Add Evidence (Quiz) -> Should boost score by 20
+POST {{baseUrl}}/evidence
+Content-Type: application/json
+x-auth-token: {{token}}
+
+{
+  "skillId": "{{skillId}}",
+  "type": "quiz",
+  "title": "Advanced React Concepts",
+  "score": 90
+}
+
+###
+
+### 8. Get Evidence for Skill
+GET {{baseUrl}}/evidence/skill/{{skillId}}
+x-auth-token: {{token}}
