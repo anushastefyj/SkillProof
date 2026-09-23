@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { ProfileProvider } from './context/ProfileContext';
 import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -15,6 +16,7 @@ import EvidenceTimeline from './pages/EvidenceTimeline';
 import GithubActivity from './pages/GithubActivity';
 import Quizzes from './pages/Quizzes';
 import CodingTasks from './pages/CodingTasks';
+import EnhanceProfile from './pages/EnhanceProfile';
 
 import RecruiterLayout from './layouts/RecruiterLayout';
 import RecruiterDashboard from './pages/recruiter/RecruiterDashboard';
@@ -27,7 +29,8 @@ import { Toaster } from 'react-hot-toast';
 function App() {
   return (
     <AuthProvider>
-      <Router>
+      <ProfileProvider>
+        <Router>
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
@@ -39,6 +42,7 @@ function App() {
             <Route path="skills" element={<MySkills />} />
             <Route path="skills/:skillId" element={<SkillDetail />} />
             <Route path="profile" element={<Profile />} />
+            <Route path="enhance-profile" element={<EnhanceProfile />} />
             <Route path="settings" element={<Settings />} />
             <Route path="add-evidence" element={<AddEvidence />} />
             <Route path="evidence" element={<EvidenceTimeline />} />
@@ -61,6 +65,7 @@ function App() {
         </Routes>
       </Router>
       <Toaster position="top-right" />
+      </ProfileProvider>
     </AuthProvider>
   );
 }
