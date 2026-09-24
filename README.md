@@ -8,11 +8,11 @@ The platform focuses on presenting **real evidence of technical capabilities** r
 
 ## Live Application
 
-| Resource             | Access                                                          |
-| -------------------- | --------------------------------------------------------------- |
-| **Live Application** | [Visit SkillProof](https://YOUR-FRONTEND-URL.vercel.app)        |
-| **Backend API**      | [View API Server](https://skillproof-u94g.onrender.com)         |
-| **Source Code**      | [GitHub Repository](https://github.com/anushastefyj/SkillProof) |
+| Resource | Access |
+|---|---|
+| **Live Application** | [Visit SkillProof](https://skillproof-peach.vercel.app/) |
+| **Backend API** | [View Backend](https://skillproof-u94g.onrender.com) |
+| **Source Code** | [GitHub Repository](https://github.com/anushastefyj/SkillProof) |
 
 > Replace `YOUR-FRONTEND-URL.vercel.app` with the actual Vercel deployment URL.
 
