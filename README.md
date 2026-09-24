@@ -1,83 +1,100 @@
 # SkillProof
 
-SkillProof is a full-stack web application designed to help students build and showcase verified technical skills through projects, coding tasks, quizzes, GitHub activity, and other forms of evidence.
+### Build Skills. Showcase Evidence. Stand Out.
 
-## Live Demo
+SkillProof is a full-stack web application that enables students to build a professional technical profile by showcasing projects, skills, coding activities, assessments, and other forms of practical evidence.
 
-**Frontend:**
-`https://your-skillproof-frontend.vercel.app`
+The platform focuses on presenting **real evidence of technical capabilities** rather than relying solely on resumes and certificates.
 
-**Backend API:**
-`https://skillproof-u94g.onrender.com`
+## Live Application
 
-**GitHub Repository:**
-`https://github.com/anushastefyj/SkillProof`
+| Resource             | Access                                                          |
+| -------------------- | --------------------------------------------------------------- |
+| **Live Application** | [Visit SkillProof](https://YOUR-FRONTEND-URL.vercel.app)        |
+| **Backend API**      | [View API Server](https://skillproof-u94g.onrender.com)         |
+| **Source Code**      | [GitHub Repository](https://github.com/anushastefyj/SkillProof) |
+
+> Replace `YOUR-FRONTEND-URL.vercel.app` with the actual Vercel deployment URL.
 
 ## Overview
 
-SkillProof provides a centralized platform where students can present practical evidence of their technical abilities.
+SkillProof provides students with a centralized platform to collect, organize, and showcase evidence of their technical skills.
 
-Instead of relying only on resumes or certificates, users can build a skill profile supported by projects, coding activities, assessments, and other verifiable evidence.
+Users can create a profile, add their technical skills, showcase projects, track coding activities, complete assessments, and build a stronger digital portfolio.
+
+### Core Objectives
+
+* Showcase practical technical skills
+* Provide evidence-based skill representation
+* Organize projects and achievements
+* Support skill assessment and verification
+* Create a professional digital profile
+* Help students present their capabilities to recruiters
 
 ## Key Features
 
-* User registration and authentication
+### Authentication
+
+* User registration and login
 * JWT-based authentication
-* Student profile management
-* Technical skill management
-* Project portfolio
-* Coding task tracking
-* Quiz and assessment support
-* GitHub project integration
-* Skill evidence management
-* REST API architecture
-* Responsive user interface
+* Secure password hashing
+* Protected API routes
+
+### Skill Management
+
+* Add and manage technical skills
+* Organize skills within a user profile
+* Track skill-related evidence
+
+### Project Portfolio
+
+* Add and showcase projects
+* Provide project descriptions
+* Connect projects with technical skills
+* Present practical development experience
+
+### Evidence Management
+
+* Coding task evidence
+* Project evidence
+* Assessment and quiz evidence
+* GitHub-based project references
+
+### User Profile
+
+* Professional student profile
+* Technical skill overview
+* Project showcase
+* Achievement and evidence tracking
 
 ## Technology Stack
 
-### Frontend
+| Layer                 | Technologies                            |
+| --------------------- | --------------------------------------- |
+| **Frontend**          | React.js, Vite, JavaScript, HTML5, CSS3 |
+| **API Communication** | Axios                                   |
+| **Backend**           | Node.js, Express.js                     |
+| **Authentication**    | JWT, bcrypt                             |
+| **Database**          | MongoDB, MongoDB Atlas                  |
+| **Deployment**        | Vercel, Render                          |
 
-* React.js
-* Vite
-* JavaScript
-* HTML5
-* CSS3
-* Axios
-
-### Backend
-
-* Node.js
-* Express.js
-* REST APIs
-* JWT
-* bcrypt
-
-### Database
-
-* MongoDB
-* MongoDB Atlas
-
-### Deployment
-
-* Vercel — Frontend
-* Render — Backend
-* MongoDB Atlas — Database
-
-## Architecture
+## System Architecture
 
 ```text
-                   SkillProof
-                       |
-          +------------+------------+
-          |                         |
-      Frontend                  Backend
-     React + Vite           Node.js + Express
-          |                         |
-          |       REST API          |
-          +----------->-------------+
-                                    |
-                                    v
-                              MongoDB Atlas
+                         SkillProof
+                             |
+                             v
+                    React + Vite Frontend
+                             |
+                         Axios / REST
+                             |
+                             v
+                    Node.js + Express
+                             |
+                    Authentication Layer
+                             |
+                             v
+                       MongoDB Atlas
 ```
 
 ## Project Structure
@@ -86,8 +103,12 @@ Instead of relying only on resumes or certificates, users can build a skill prof
 SkillProof/
 │
 ├── client/
-│   ├── src/
 │   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   └── ...
 │   └── package.json
 │
 ├── server/
@@ -102,7 +123,16 @@ SkillProof/
 └── README.md
 ```
 
-## Local Development
+## Getting Started
+
+### Prerequisites
+
+Make sure the following are installed:
+
+* Node.js
+* npm
+* Git
+* MongoDB Atlas account
 
 ### Clone the Repository
 
@@ -111,7 +141,36 @@ git clone https://github.com/anushastefyj/SkillProof.git
 cd SkillProof
 ```
 
+### Backend Setup
+
+```bash
+cd server
+npm install
+```
+
+Create a `.env` file inside the `server` directory:
+
+```env
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+PORT=5001
+```
+
+Start the backend:
+
+```bash
+npm start
+```
+
+Backend:
+
+```text
+http://localhost:5001
+```
+
 ### Frontend Setup
+
+Open a new terminal:
 
 ```bash
 cd client
@@ -125,25 +184,11 @@ Frontend:
 http://localhost:5173
 ```
 
-### Backend Setup
-
-Open a new terminal:
-
-```bash
-cd server
-npm install
-npm start
-```
-
-Backend:
-
-```text
-http://localhost:5001
-```
-
 ## Environment Configuration
 
-Create a `.env` file inside the `server` directory:
+Sensitive information is stored using environment variables.
+
+Example:
 
 ```env
 MONGO_URI=your_mongodb_connection_string
@@ -151,17 +196,34 @@ JWT_SECRET=your_jwt_secret
 PORT=5001
 ```
 
-Never commit `.env` files or production credentials to GitHub.
+The `.env` file must not be committed to the repository.
 
-## Production Backend
-
-The SkillProof backend is deployed on Render:
+Recommended `.gitignore` entries:
 
 ```text
-https://skillproof-u94g.onrender.com
+.env
+node_modules/
 ```
 
-The production frontend communicates with the deployed backend through REST APIs.
+## Production Deployment
+
+### Frontend
+
+The frontend is deployed using Vercel.
+
+[Visit SkillProof](https://YOUR-FRONTEND-URL.vercel.app)
+
+### Backend
+
+The backend is deployed using Render.
+
+[View Backend API](https://skillproof-u94g.onrender.com)
+
+### Database
+
+The application uses MongoDB Atlas for cloud database management.
+
+The SkillProof application uses a dedicated database within the existing MongoDB Atlas cluster.
 
 ## Authentication Flow
 
@@ -169,73 +231,55 @@ The production frontend communicates with the deployed backend through REST APIs
 User
   |
   v
-React Frontend
-  |
-  v
 Login / Register
   |
   v
-Express API
+React Frontend
   |
   v
-MongoDB
+Express REST API
   |
   v
-JWT Token
+Validate Credentials
   |
   v
-Authenticated Requests
+Generate JWT
+  |
+  v
+Authenticated User
 ```
 
 ## Security
 
+SkillProof follows basic application security practices:
+
+* Password hashing with bcrypt
 * JWT-based authentication
-* Password hashing using bcrypt
+* Protected backend routes
 * Environment-based configuration
-* Protected API routes
-* Database credentials kept outside source control
+* Database credentials stored outside source code
 * Production secrets managed through deployment environment variables
-
-## Deployment
-
-### Frontend
-
-The frontend is deployed using Vercel.
-
-```text
-https://your-skillproof-frontend.vercel.app
-```
-
-### Backend
-
-The backend is deployed using Render.
-
-```text
-https://skillproof-u94g.onrender.com
-```
-
-### Database
-
-MongoDB Atlas provides the production database infrastructure.
+* `.env` excluded from version control
 
 ## Future Enhancements
 
 * AI-powered skill verification
 * Automated GitHub activity analysis
 * AI resume analysis
-* Job recommendation system
+* Personalized job recommendations
 * Recruiter dashboard
 * Skill-based candidate matching
-* Advanced analytics and reporting
+* Advanced skill analytics
+* Automated project evaluation
 
 ## Developer
 
-**Anusha Stefy J**
+### Anusha Stefy J
 
 B.Tech in Artificial Intelligence and Data Science
 
-GitHub: `anushastefyj`
+[GitHub Profile](https://github.com/anushastefyj)
 
 ## License
 
-This project is developed for educational and portfolio purposes.
+This project is developed for educational, portfolio, and demonstration purposes.
