@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://skillproof-u94g.onrender.com/api',
+  baseURL: 'https://skillproof-u94g.onrender.com',
   headers: {
     'Content-Type': 'application/json'
   }
