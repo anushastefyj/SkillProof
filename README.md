@@ -7,6 +7,10 @@ SkillProof is a full-stack web application designed to help students build a str
 Instead of simply listing skills on a resume, SkillProof provides a structured way to present practical evidence behind those skills.
 
 ---
+<img width="1901" height="912" alt="image" src="https://github.com/user-attachments/assets/74bce62e-44ff-446b-94e2-682f59cede18" />
+<img width="1917" height="912" alt="image" src="https://github.com/user-attachments/assets/547ea8db-90c7-41fd-9df1-79016e70007b" />
+<img width="1896" height="910" alt="image" src="https://github.com/user-attachments/assets/c86c3b90-18ea-4d68-9731-c6a45937eb27" />
+<img width="1901" height="915" alt="image" src="https://github.com/user-attachments/assets/57d73b20-ed59-49d6-9bfa-9af0b05b9874" />
 
 ## Live Application
 
