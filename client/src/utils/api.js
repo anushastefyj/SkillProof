@@ -22,7 +22,7 @@ api.interceptors.request.use(
 );
 
 export const generateQuiz = async (skill) => {
-  const response = await api.post('/quizzes/generate', { skill });
+  const response = await api.post('/api/quizzes/generate', { skill });
   return response.data;
 };
 
